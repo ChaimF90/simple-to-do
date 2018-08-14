@@ -1,24 +1,39 @@
 import React from "react";
+import axios from "axios";
 
 class Main extends React.Component {
-    constructor() {
-        super();
-        console.log("in ctr");
+    
+    state = {
+        username: "",
+        followers: [],
+        //login , avater-url
     }
 
-    componentDidMount() {
-        console.log("in did mount");
-        this.setState({});
+    // componentDidMount() {
+    //     axios.get("https://api.github.com/users/chaimf90").then(res => {
+    //         axios.get(res.data.followers_url).then(res => console.log(res.data));
+    //     });
+    // }
+    
+    changeHandler = (e) => {
+        this.setState({username: e.target.value});
     }
 
-    componentDidUpdate(props, state) {
-        console.log("in did update");
+    submitHandler = (e) => {
+        e.preventDefault();
+        axios.get(`https://api.github.com/users/${this.state.username}`).then(res => {
+            axios.get(res.data.followers_url).then(res => {
+                
+            });
+        });
     }
 
     render() {
-        console.log("in render");
         return (
-            <h1>Hello world</h1>
+          <form onSubmit={this.submitHandler}>
+            <input type="text" value={this.state.username} onChange={this.changeHandler}/>
+            <button>Click</button>
+          </form>  
         );
     }
 }
